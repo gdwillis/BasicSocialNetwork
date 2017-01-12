@@ -19,8 +19,10 @@
 		840B0CBF1DBAC5390093C342 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 840B0CBE1DBAC5390093C342 /* FBSDKLoginKit.framework */; };
 		840B0CC11DBAC5470093C342 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 840B0CC01DBAC5470093C342 /* FBSDKShareKit.framework */; };
 		842094521DD7EAA000EFA05F /* MyBooksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842094511DD7EAA000EFA05F /* MyBooksVC.swift */; };
+		84322E561E27818600D631C5 /* MovieTransitioner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84322E551E27818600D631C5 /* MovieTransitioner.swift */; };
+		84322E591E27819600D631C5 /* MoviePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84322E571E27819600D631C5 /* MoviePresentationController.swift */; };
+		84322E5A1E27819600D631C5 /* OverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84322E581E27819600D631C5 /* OverlayViewController.swift */; };
 		843AD8881E07B64200664740 /* ConfirmDeleteBookVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843AD8871E07B64200664740 /* ConfirmDeleteBookVC.swift */; };
-		84583A1F1DBAFA8B0026E4B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84583A1D1DBAFA8B0026E4B0 /* Main.storyboard */; };
 		84583A221DBAFA930026E4B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84583A201DBAFA930026E4B0 /* LaunchScreen.storyboard */; };
 		84583A241DBB08590026E4B0 /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84583A231DBB08590026E4B0 /* FeedVC.swift */; };
 		847A09E11DE15329001E7CDC /* BookUpdateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A09E01DE15329001E7CDC /* BookUpdateVC.swift */; };
@@ -29,6 +31,8 @@
 		84AB6E811DF8D11000B2F7B9 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB6E801DF8D11000B2F7B9 /* Util.swift */; };
 		84AB6E831DF9E4EB00B2F7B9 /* BookDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB6E821DF9E4EA00B2F7B9 /* BookDetailsVC.swift */; };
 		84BD32221DEE7F6A005A5398 /* AddBookManualyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BD32211DEE7F6A005A5398 /* AddBookManualyVC.swift */; };
+		84C5E4991E1AD6EE002A5EA8 /* ScannerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C5E4981E1AD6EE002A5EA8 /* ScannerVC.swift */; };
+		84DB709A1E274E8F007DA8AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84DB70991E274E8F007DA8AA /* Main.storyboard */; };
 		84DFD1591DBF03C4007553C9 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DFD1581DBF03C4007553C9 /* Post.swift */; };
 		84E2714A1DB6C4AC001CE2A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E271491DB6C4AC001CE2A4 /* AppDelegate.swift */; };
 		84E2714C1DB6C4AC001CE2A4 /* SigninVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E2714B1DB6C4AC001CE2A4 /* SigninVC.swift */; };
@@ -56,8 +60,10 @@
 		840B0CBE1DBAC5390093C342 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		840B0CC01DBAC5470093C342 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		842094511DD7EAA000EFA05F /* MyBooksVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyBooksVC.swift; sourceTree = "<group>"; };
+		84322E551E27818600D631C5 /* MovieTransitioner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieTransitioner.swift; sourceTree = "<group>"; };
+		84322E571E27819600D631C5 /* MoviePresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviePresentationController.swift; sourceTree = "<group>"; };
+		84322E581E27819600D631C5 /* OverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayViewController.swift; sourceTree = "<group>"; };
 		843AD8871E07B64200664740 /* ConfirmDeleteBookVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmDeleteBookVC.swift; sourceTree = "<group>"; };
-		84583A1E1DBAFA8B0026E4B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		84583A211DBAFA930026E4B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84583A231DBB08590026E4B0 /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		847A09E01DE15329001E7CDC /* BookUpdateVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookUpdateVC.swift; sourceTree = "<group>"; };
@@ -66,6 +72,8 @@
 		84AB6E801DF8D11000B2F7B9 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		84AB6E821DF9E4EA00B2F7B9 /* BookDetailsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailsVC.swift; sourceTree = "<group>"; };
 		84BD32211DEE7F6A005A5398 /* AddBookManualyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBookManualyVC.swift; sourceTree = "<group>"; };
+		84C5E4981E1AD6EE002A5EA8 /* ScannerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerVC.swift; sourceTree = "<group>"; };
+		84DB70991E274E8F007DA8AA /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		84DCA92F1DBAD4BE00049ACA /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		84DCA9301DBAD68F00049ACA /* BasicSocialNetwork.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BasicSocialNetwork.entitlements; sourceTree = "<group>"; };
 		84DFD1581DBF03C4007553C9 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -126,6 +134,7 @@
 		840B0CB31DBABC630093C342 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				84322E551E27818600D631C5 /* MovieTransitioner.swift */,
 				840B0CB41DBABC730093C342 /* Constants.swift */,
 				84AB6E801DF8D11000B2F7B9 /* Util.swift */,
 			);
@@ -163,7 +172,7 @@
 				84E271491DB6C4AC001CE2A4 /* AppDelegate.swift */,
 				84E271501DB6C4AC001CE2A4 /* Assets.xcassets */,
 				84E271551DB6C4AC001CE2A4 /* Info.plist */,
-				84583A1D1DBAFA8B0026E4B0 /* Main.storyboard */,
+				84DB70991E274E8F007DA8AA /* Main.storyboard */,
 				84583A201DBAFA930026E4B0 /* LaunchScreen.storyboard */,
 				84DCA92F1DBAD4BE00049ACA /* Bridging-Header.h */,
 			);
@@ -183,6 +192,9 @@
 		84E2715E1DB6D07C001CE2A4 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				84322E571E27819600D631C5 /* MoviePresentationController.swift */,
+				84322E581E27819600D631C5 /* OverlayViewController.swift */,
+				84C5E4981E1AD6EE002A5EA8 /* ScannerVC.swift */,
 				84E2714B1DB6C4AC001CE2A4 /* SigninVC.swift */,
 				840B0CAF1DB7F4D80093C342 /* CameraVC.swift */,
 				84583A231DBB08590026E4B0 /* FeedVC.swift */,
@@ -286,10 +298,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84583A1F1DBAFA8B0026E4B0 /* Main.storyboard in Resources */,
 				84F414CB1DEF3EA500DA0AF5 /* GoogleService-Info.plist in Resources */,
 				84583A221DBAFA930026E4B0 /* LaunchScreen.storyboard in Resources */,
 				84E271511DB6C4AC001CE2A4 /* Assets.xcassets in Resources */,
+				84DB709A1E274E8F007DA8AA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,7 +362,10 @@
 			files = (
 				840B0CB71DBABEDA0093C342 /* RoundButton.swift in Sources */,
 				840B0CB51DBABC730093C342 /* Constants.swift in Sources */,
+				84322E561E27818600D631C5 /* MovieTransitioner.swift in Sources */,
+				84322E5A1E27819600D631C5 /* OverlayViewController.swift in Sources */,
 				84AB6E831DF9E4EB00B2F7B9 /* BookDetailsVC.swift in Sources */,
+				84322E591E27819600D631C5 /* MoviePresentationController.swift in Sources */,
 				8401C4FA1DDD9FC6008EF16D /* BookCell.swift in Sources */,
 				84F414C51DEF098C00DA0AF5 /* BookSearchVC.swift in Sources */,
 				84AB6E811DF8D11000B2F7B9 /* Util.swift in Sources */,
@@ -369,6 +384,7 @@
 				840B0CB91DBAC0670093C342 /* FancyField.swift in Sources */,
 				84E2714A1DB6C4AC001CE2A4 /* AppDelegate.swift in Sources */,
 				84FB53B81DBD93300028E99C /* PostCell.swift in Sources */,
+				84C5E4991E1AD6EE002A5EA8 /* ScannerVC.swift in Sources */,
 				843AD8881E07B64200664740 /* ConfirmDeleteBookVC.swift in Sources */,
 				8486172A1E10FC780078A9E1 /* User.swift in Sources */,
 			);
@@ -377,14 +393,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		84583A1D1DBAFA8B0026E4B0 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				84583A1E1DBAFA8B0026E4B0 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		84583A201DBAFA930026E4B0 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

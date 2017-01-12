@@ -22,4 +22,29 @@ class User {
         User.wantToReadBooks = [] 
     }
     
+    static func sortBooks()
+    {
+        
+        haveReadBooks.sort(by:{
+            var b = false
+            if $0.title != nil && $1.title != nil { b = $0.title! < $1.title! }
+            return b
+            
+        })
+        
+        amReadingBooks.sort(by:{
+            var b = false
+            if $0.title != nil && $1.title != nil { b = $0.title! < $1.title! }
+            return b
+            
+        })
+        
+        wantToReadBooks.sort(by:{
+            var b = false
+            if $0.title != nil && $1.title != nil { b = $0.title! < $1.title! }
+            return b
+            
+        })
+        
+    }
 }

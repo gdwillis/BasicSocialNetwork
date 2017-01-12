@@ -61,5 +61,9 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) camera use</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>we need your location</string>
 </dict>
 </plist>

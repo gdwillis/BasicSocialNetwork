@@ -19,8 +19,10 @@ class ConfirmDeleteBookVC: UIViewController {
     @IBAction func OnYes(_ sender: AnyObject) {
         book.removeBook()
         
-        self.dismiss(animated: true, completion: {
-            self.sendersVC.dismiss(animated: true, completion: nil)})
+        self.dismiss(animated: true, completion: nil)
+        
+       // book.updateUsersMyBooks()
+        self.performSegue(withIdentifier: "unwindToMyBooks", sender: nil)
     }
     
     override func viewDidLoad() {
@@ -34,7 +36,14 @@ class ConfirmDeleteBookVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        self.view.bounds.size = CGSize(width: UIScreen.main.bounds.size.width - 20, height: 200)
+        
+        self.view.layer.cornerRadius = 5
+        
+    }
     /*
     // MARK: - Navigation
 

@@ -10,7 +10,8 @@ import UIKit
 
 class BookUpdateVC: UIViewController {
     
-    @IBOutlet weak var delete: UIButton!
+    
+
     var book: Book!
     var isAdding: Bool = false
     
@@ -35,36 +36,47 @@ class BookUpdateVC: UIViewController {
         
         if isAdding {
             book.addBookToBookRef()
+            self.performSegue(withIdentifier: "unwindToSearch", sender: nil)
         }
         else {
             book.updateUsersMyBooks()
+            self.performSegue(withIdentifier: "unwindToMyBooks", sender: nil)
         }
         
-        
-        self.dismiss(animated: true, completion: nil)
+       
+
+       // self.dismiss(animated: true, completion: {print("completed")
+           // self.dismiss(animated: true, completion: nil)
+        //})
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         if isAdding {
             header.text = "Add To:"
-            delete.isHidden = true
         }
         else {
             header.text = "Move To:"
-            delete.isHidden = false 
         }
+       
         // Do any additional setup after loading the view.
     }
-    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        self.view.bounds.size = CGSize(width: UIScreen.main.bounds.size.width - 20, height: 200)
+        
+        self.view.layer.cornerRadius = 5
+        
+    }
    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SEGUE_TO_CONFIRM_DELETE {
-            let destination = segue.destination as! ConfirmDeleteBookVC
-            destination.book = book
-            destination.sendersVC = self
+      if segue.identifier == "unwindToMyBooks" {
+            let destination = segue.destination as! MyBooksVC
+            destination.segmentedControl.selectedSegmentIndex = book.getSegmentedControlIndex()
         }
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

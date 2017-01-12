@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BookCell: UITableViewCell {
+class BookCell: UICollectionViewCell {
 
     private var _book: Book!
     
@@ -27,26 +27,23 @@ class BookCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+    
     
     func configureCell(book: Book)
     {
         _book = book
        // titleLabel.text = _book.bookKey
         titleLabel.text = _book.title
-        if let authors = _book.authors {
-            var text = ""
-            authorLabel.numberOfLines = authors.count
-            for author in authors {
-                text += "\(author)\n"
-                authorLabel.text = text
-            }
-        }
+       // if let authors = _book.authors {
+         //   var text = ""
+           // authorLabel.numberOfLines = authors.count
+           // for author in authors {
+           //     text += "\(author)\n"
+           //     authorLabel.text = text
+          //  }
+        //}
         _book.getImageFromGoogle(imageView: thumbnail, activityIndicator: activityIndicator, isThumbnail: true)
     }
 
+   
 }

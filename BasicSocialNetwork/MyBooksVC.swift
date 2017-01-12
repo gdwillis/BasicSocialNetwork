@@ -11,28 +11,27 @@ import Firebase
 import SwiftKeychainWrapper
 import Alamofire
 
-class MyBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
-    
-    
-    @IBAction func segmentedControlValueChanged(_ sender: AnyObject) {
-        tableView.reloadData()
+class MyBooksVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIPopoverPresentationControllerDelegate,UISearchResultsUpdating {
+   
+    @IBAction func unwindToMyBooks(segue: UIStoryboardSegue) {
+        
     }
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBarPlaceHolder:UIView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBAction func segmentedControlValueChanged(_ sender: AnyObject) {
+       // resultsSearchController.isActive = false
+        collectionView.reloadData()
+    }
+    
+  
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == SEGUE_TO_MOVE_ADD_BOOK {
-            let button = sender as! UIButton
-            let view = button.superview!
-            let cell = view.superview as! BookCell
-            let destination = segue.destination as! BookUpdateVC
-            destination.book = cell.book
-            destination.isAdding = false
-        }
-        else if segue.identifier == SEGUE_TO_BOOK_DETAILS {
+       // resultsSearchController.isActive = false
+        if segue.identifier == SEGUE_TO_BOOK_DETAILS {
             let destination = segue.destination as! BookDetailsVC
             destination.hasAddButton = false
             let cell = sender as! BookCell
@@ -56,10 +55,32 @@ class MyBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, U
      return .none
      }*/
     
+    
+    var resultsSearchController:UISearchController = UISearchController(searchResultsController: nil)
+    var filteredBooks = [Book]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
-        tableView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        self.resultsSearchController.searchResultsUpdater = self
+        self.resultsSearchController.dimsBackgroundDuringPresentation = false
+        self.resultsSearchController.hidesNavigationBarDuringPresentation = false
+        //self.resultsSearchController.definesPresentationContext = false
+       // self.resultsSearchController.hides
+     
+       
+        //self.view.addSubview(resultsSearchController.searchBar)
+        // self.resultsSearchController.searchBar.transform.translatedBy(x: 0, y: 50)
+        
+    
+        navigationController?.navigationBar.addSubview(resultsSearchController.searchBar)
+        self.resultsSearchController.searchBar.sizeToFit()
+        searchBarPlaceHolder.addSubview(resultsSearchController.searchBar)
+      //  automaticallyAdjustsScrollViewInsets = false
+       // definesPresentationContext = true
+        self.collectionView.reloadData()
+        
         DataService.ds.REF_USER_CURRENT_BOOKS.observe(.value, with: {(snapshot) in
             User.resetBooks()
             if let myBooks = snapshot.children.allObjects as? [FIRDataSnapshot] {
@@ -100,7 +121,7 @@ class MyBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, U
                         counter += 1
                         //only reload data when observer finishes apending all books
                         if counter >= myBooks.count {
-                            self.tableView.reloadData()
+                            self.collectionView.reloadData()
                         }
                         
                     })
@@ -113,54 +134,92 @@ class MyBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, U
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+       // self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch(segmentedControl.selectedSegmentIndex)
-        {
-        case 0:
-            return User.haveReadBooks.count
-        case 1:
-            return User.amReadingBooks.count
-        case 2:
-            return User.wantToReadBooks.count
-        default:
-            break
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if(self.resultsSearchController.isActive) {
+            return self.filteredBooks.count
         }
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if let myCell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as? BookCell {
+        else {
             switch(segmentedControl.selectedSegmentIndex)
             {
             case 0:
-                myCell.configureCell(book: User.haveReadBooks[indexPath.row])
-                break
+                return User.haveReadBooks.count
             case 1:
-                myCell.configureCell(book: User.amReadingBooks[indexPath.row])
-                break
+                return User.amReadingBooks.count
             case 2:
-                myCell.configureCell(book: User.wantToReadBooks[indexPath.row])
-                break
+                return User.wantToReadBooks.count
             default:
                 break
             }
-            
+            return 0
+        }
+    }
+  
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let myCell = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell", for: indexPath) as? BookCell {
+            if self.resultsSearchController.isActive {
+                myCell.configureCell(book: filteredBooks[indexPath.row])
+            }
+            else {
+                switch(segmentedControl.selectedSegmentIndex)
+                {
+                case 0:
+                    myCell.configureCell(book: User.haveReadBooks[indexPath.row])
+                    break
+                case 1:
+                    myCell.configureCell(book: User.amReadingBooks[indexPath.row])
+                    break
+                case 2:
+                    myCell.configureCell(book: User.wantToReadBooks[indexPath.row])
+                    break
+                default:
+                    break
+                }
+            }
             return myCell
         }
         else {
-            return UITableViewCell()
+            return UICollectionViewCell()
         }
     }
     
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        filteredBooks.removeAll(keepingCapacity: false)
+        
+        var array = [Book]()
+        switch(segmentedControl.selectedSegmentIndex)
+        {
+        case 0:
+                array = User.haveReadBooks
+            break
+        case 1:
+                array = User.amReadingBooks
+            break
+        case 2:
+                array = User.wantToReadBooks
+            break
+        default:
+            break
+        }
+
+        filteredBooks = array.filter {
+            $0.title?.range (of: searchController.searchBar.text!, options: .caseInsensitive) != nil
+        }
+        
+        collectionView.reloadData()
+        
+    }
     
-    
+    @IBAction func onSort(_ sender: AnyObject) {
+        User.sortBooks()
+        collectionView.reloadData()
+        print("sorted")
+    }
 }

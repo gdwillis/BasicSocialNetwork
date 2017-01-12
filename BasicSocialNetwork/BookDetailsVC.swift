@@ -10,6 +10,20 @@ import UIKit
 
 class BookDetailsVC: UIViewController {
 
+    
+    
+    @IBAction func deleteAction(_ sender: Any) {
+        showOverlayFor(isMove: false)
+    }
+    
+    
+    @IBOutlet weak var deleteButton: UIButton!
+    @IBAction func onAdd(_ sender: Any) {
+         showOverlayFor(isMove: true
+        )
+    }
+    
+    
     @IBOutlet weak var descriptionHeader: UILabel!
     @IBOutlet weak var reviewsHeader: UILabel!
     @IBOutlet weak var genreHeader: UILabel!
@@ -30,13 +44,23 @@ class BookDetailsVC: UIViewController {
     @IBOutlet weak var addButton: UIButton!
     var book: Book!
     var hasAddButton: Bool = false
+    
+    let movieTransitionDelegate = MovieTransitionDelegate()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if hasAddButton {
-            addButton.isHidden = false
+            addButton.setTitle("Add", for: .normal)
+            let margin = addButton.superview?.layoutMarginsGuide
+            addButton.trailingAnchor.constraint(equalTo: (margin?.trailingAnchor)!).isActive = true
+            
+            
+            deleteButton.isHidden = true
         }
         else {
-            addButton.isHidden = true
+            addButton.setTitle("Move", for: .normal)
+            
+            deleteButton.isHidden = false
         }
         
         titleLabel.text = book.title
@@ -87,6 +111,33 @@ class BookDetailsVC: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    func showOverlayFor (isMove: Bool) {
+        let sb = UIStoryboard(name: "Main", bundle:nil)
+        
+        transitioningDelegate = movieTransitionDelegate
+        if isMove {
+           let overlayVC = sb.instantiateViewController(withIdentifier: "UpdateBook") as! BookUpdateVC
+            overlayVC.transitioningDelegate = movieTransitionDelegate
+            overlayVC.modalPresentationStyle = .custom
+            
+            self.present(overlayVC, animated: true, completion: nil)
+            overlayVC.isAdding = hasAddButton
+            overlayVC.book = book
+        }
+        else {
+            let overlayVC = sb.instantiateViewController(withIdentifier: "ConfrimDeleteBook") as! ConfirmDeleteBookVC
+            
+            overlayVC.transitioningDelegate = movieTransitionDelegate
+            overlayVC.modalPresentationStyle = .custom
+            
+            self.present(overlayVC, animated: true, completion: nil)
+            
+            overlayVC.book = book
+        }
+        
+      
+    }
+    
     private func hideLabels() {
         if ReviewsLabel.text == ""
         {
@@ -147,13 +198,13 @@ class BookDetailsVC: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+   /* override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SEGUE_TO_MOVE_ADD_BOOK {
             let destination = segue.destination as! BookUpdateVC
             destination.book = book
-            destination.isAdding = true
+            destination.isAdding = hasAddButton
         }
-    }
+    }*/
     
     
 }

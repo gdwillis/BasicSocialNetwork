@@ -30,6 +30,8 @@ class Book {
     private var _genres: [String]?
     private let imageCache = AutoPurgingImageCache(memoryCapacity: 100_000_000, preferredMemoryUsageAfterPurge: 60_000_000)
     
+    
+    
     var title: String? {
         return _title
     }
@@ -138,12 +140,18 @@ class Book {
         let dictionary = [_bookKey!: _category!]
         return dictionary
     }
-    
+    func setThumbnailsURL(thumbnailURL:String) {
+        _thumbnailURL = thumbnailURL
+        _largeImageURL = thumbnailURL 
+    }
     func serializeBooks() -> Dictionary<String, Any> {
         
         var dictionary = Dictionary<String, Any>()
         if _isManualyAdded {
-            dictionary = ["title": _title!, "authors": _authors!, "isManualyAdded": true]
+            var imageLinks = Dictionary<String, Any>()
+            imageLinks["smallThumbnail"] = _thumbnailURL
+            imageLinks["thumbnail"] = _largeImageURL
+            dictionary = ["title": _title!, "authors": _authors!, "imageLinks": imageLinks, "isManualyAdded": true]
         }
         else {
             if let volumeInfo = _volumeInfo {
@@ -189,7 +197,6 @@ class Book {
     
     func addBookToBookRef() {
         
-       
         _bookRef?.setValue(self.serializeBooks())
         self.updateUsersMyBooks()
     }
@@ -223,8 +230,32 @@ class Book {
         } else {
             imageView.isHidden = true
             activityIndicator.startAnimating()
+            
             if let url = imageURL {
-                
+                //get image from firebase
+            if _isManualyAdded {
+                let ref = FIRStorage.storage().reference(forURL: url)
+                ref.data(withMaxSize: 2 * 1024 * 1024, completion: { (data, error) in
+                    if error != nil {
+                        print("GW Unable to download image from Firebase storage: \(error)")
+                        activityIndicator.stopAnimating()
+                        imageView.isHidden = false
+                        imageView.image = #imageLiteral(resourceName: "devslopes")
+                    } else {
+                        print("GW image downloaded succesfully from fb storage")
+                        if let imgData = data {
+                            if let image = UIImage(data: imgData) {
+                                activityIndicator.stopAnimating()
+                                imageView.image = image
+                                self.cacheImage(image: image, urlString: url)
+                                imageView.isHidden = false
+                            }
+                        }
+                    }
+                })
+                }
+                //get image from google
+            else {
                 Alamofire.request(url).responseImage(completionHandler: {(response) in                    if let image = response.result.value {
                     activityIndicator.stopAnimating()
                     imageView.image = image
@@ -235,7 +266,7 @@ class Book {
                     print("GW: almofireimage was not successful")
                     }
                 })
-                
+                }
             }
             else {
                 //google books did not have a image so use a default image
@@ -245,6 +276,24 @@ class Book {
             }
             
         }
+    }
+    func getSegmentedControlIndex() -> Int{
+        if let category = self.category {
+        switch(category)
+        {
+        case HAVE_READ:
+            return 0
+        case AM_READING:
+            return 1
+        case WANT_TO_READ:
+            return 2
+        default:
+            break
+        }
+    }
+        
+        return 0
+    
     }
 
 }
