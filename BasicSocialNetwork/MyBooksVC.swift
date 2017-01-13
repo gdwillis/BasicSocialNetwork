@@ -11,7 +11,8 @@ import Firebase
 import SwiftKeychainWrapper
 import Alamofire
 
-class MyBooksVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIPopoverPresentationControllerDelegate,UISearchResultsUpdating {
+class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDataSource, UIPopoverPresentationControllerDelegate,UISearchResultsUpdating {
+   
    
     @IBAction func unwindToMyBooks(segue: UIStoryboardSegue) {
         
@@ -28,7 +29,9 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
   
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
-    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        collectionView.reloadData()
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        // resultsSearchController.isActive = false
         if segue.identifier == SEGUE_TO_BOOK_DETAILS {
@@ -66,7 +69,10 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         self.resultsSearchController.searchResultsUpdater = self
         self.resultsSearchController.dimsBackgroundDuringPresentation = false
         self.resultsSearchController.hidesNavigationBarDuringPresentation = false
-        //self.resultsSearchController.definesPresentationContext = false
+        resultsSearchController.searchBar.delegate = self
+    
+        resultsSearchController.searchBar.placeholder = "Find books in my list"
+        
        // self.resultsSearchController.hides
      
        
@@ -74,10 +80,11 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         // self.resultsSearchController.searchBar.transform.translatedBy(x: 0, y: 50)
         
     
-        navigationController?.navigationBar.addSubview(resultsSearchController.searchBar)
+        //navigationController?.navigationBar.addSubview(resultsSearchController.searchBar)
         self.resultsSearchController.searchBar.sizeToFit()
         searchBarPlaceHolder.addSubview(resultsSearchController.searchBar)
-      //  automaticallyAdjustsScrollViewInsets = false
+        
+        self.definesPresentationContext = true      //  automaticallyAdjustsScrollViewInsets = false
        // definesPresentationContext = true
         self.collectionView.reloadData()
         
@@ -140,6 +147,8 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if(self.resultsSearchController.isActive) {
@@ -213,13 +222,30 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             $0.title?.range (of: searchController.searchBar.text!, options: .caseInsensitive) != nil
         }
         
-        collectionView.reloadData()
+        if searchController.searchBar.text != "" {
+            collectionView.reloadData()
+        }
         
     }
     
+    var isAscending: Bool = false
+    
+    @IBOutlet weak var sortButton: UIButton!
     @IBAction func onSort(_ sender: AnyObject) {
-        User.sortBooks()
+        
+        
+        if isAscending == false {
+            isAscending = true
+        }
+        else {
+            isAscending = false
+            
+        }
+    
+        User.sortBooks(isAscending: isAscending)
         collectionView.reloadData()
-        print("sorted")
+        sortButton.transform = sortButton.transform.scaledBy(x: 1, y: -1)
     }
+    
+   
 }

@@ -22,27 +22,31 @@ class User {
         User.wantToReadBooks = [] 
     }
     
-    static func sortBooks()
+    static func sortBooks(isAscending: Bool)
     {
+        let sortClousure = { (b0:Book, b1:Book) -> Bool in
+            var flag = false
+            if isAscending {
+                if b0.title != nil && b1.title != nil { flag = b0.title! < b1.title! }
+            }
+            else {
+                 if b0.title != nil && b1.title != nil { flag = b0.title! > b1.title! }
+            }
+            return flag
+        }
         
         haveReadBooks.sort(by:{
-            var b = false
-            if $0.title != nil && $1.title != nil { b = $0.title! < $1.title! }
-            return b
             
+            sortClousure($0, $1)
         })
         
         amReadingBooks.sort(by:{
-            var b = false
-            if $0.title != nil && $1.title != nil { b = $0.title! < $1.title! }
-            return b
+            sortClousure($0, $1)
             
         })
         
         wantToReadBooks.sort(by:{
-            var b = false
-            if $0.title != nil && $1.title != nil { b = $0.title! < $1.title! }
-            return b
+            sortClousure($0, $1)
             
         })
         

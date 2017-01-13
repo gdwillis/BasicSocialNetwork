@@ -182,7 +182,7 @@ class Book {
     
     public func updateUsersMyBooks() {
    
-        usersMyBooksRef.updateChildValues(self.serializeUsersMyBooks())
+    usersMyBooksRef.updateChildValues(self.serializeUsersMyBooks())
     }
     
     func removeBook () {

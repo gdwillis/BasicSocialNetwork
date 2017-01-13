@@ -42,9 +42,10 @@ class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         self.resultsSearchController.searchBar.sizeToFit()
         
         self.tableView.tableHeaderView = self.resultsSearchController.searchBar
-        
+        self.definesPresentationContext = true
         self.tableView.reloadData()
         
+        resultsSearchController.searchBar.placeholder = "Search by title, author,   or genre"
         // Do any additional setup after loading the view.
     }
     
@@ -86,11 +87,11 @@ class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        //self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        resultsSearchController.isActive = false
+        //resultsSearchController.isActive = false
         
      if segue.identifier == SEGUE_TO_BOOK_DETAILS {
             let destination = segue.destination as! BookDetailsVC
@@ -138,7 +139,7 @@ class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource
            requestURL =  BASE_SEARCH_URL  + BookSearchVC.isbn + GOOGLE_APIKEY
             BookSearchVC.isbn = ""
         }
-        print("\(requestURL)")
+     //   print("\(requestURL)")
         _books = []
         Alamofire.request(requestURL).responseJSON(completionHandler: { response in
             let result = response.result.value
@@ -180,8 +181,11 @@ class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource
 
     }
     func updateSearchResults(for searchController: UISearchController) {
-            search(searchController: searchController)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(self.search(searchController:)), object: nil)
+            //search(searchController: searchController)
+        self.perform(#selector(self.search(searchController:)), with: searchController, afterDelay: 0.5)
            }
+   
     func search(searchController: UISearchController) {
         self._volumes = []
         _books = []

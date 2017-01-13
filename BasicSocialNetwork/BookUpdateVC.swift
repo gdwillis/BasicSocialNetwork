@@ -36,14 +36,14 @@ class BookUpdateVC: UIViewController {
         
         if isAdding {
             book.addBookToBookRef()
-            self.performSegue(withIdentifier: "unwindToSearch", sender: nil)
+       
         }
         else {
             book.updateUsersMyBooks()
-            self.performSegue(withIdentifier: "unwindToMyBooks", sender: nil)
         }
         
-       
+        
+       self.performSegue(withIdentifier: "unwindToMyBooks", sender: nil)
 
        // self.dismiss(animated: true, completion: {print("completed")
            // self.dismiss(animated: true, completion: nil)
