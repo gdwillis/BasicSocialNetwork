@@ -45,23 +45,13 @@ class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         self.definesPresentationContext = true
         self.tableView.reloadData()
         
-        resultsSearchController.searchBar.placeholder = "Search by title, author,   or genre"
+        resultsSearchController.searchBar.placeholder = "Search by title, author, genre, or ISBN"
         // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if BookSearchVC.isbn == "" {
-            //loadViewIfNeeded()
-           // resultsSearchController.searchBar.isHidden = false
-          //  segmentedControl.isHidden = false
-          //  searchByLabel.isHidden = false
-        }
-        else {
-            searchGoogleAPI(scrollToTop: false)
-           // resultsSearchController.searchBar.isHidden = true
-           // segmentedControl.isHidden = true
-            //searchByLabel.isHidden = true
-        }
+      
+      
         
     }
     
@@ -87,7 +77,11 @@ class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //self.navigationController?.setNavigationBarHidden(true, animated: true)
+        if BookSearchVC.isbn != "" {
+            resultsSearchController.searchBar.text = BookSearchVC.isbn
+            segmentedControl.selectedSegmentIndex = 3
+            BookSearchVC.isbn = ""
+        }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -125,21 +119,20 @@ class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             searchBy = INAUTHOR
         case 2:
             searchBy = SUBJECT
+        case 3:
+            searchBy = ISBN 
         default:
             break
         }
 
         
         var requestURL = ""
-        if BookSearchVC.isbn == "" {
            let baseURL = BASE_SEARCH_URL + searchBy + searchText! + GOOGLE_APIKEY
            requestURL = baseURL + PARTIAL_RESPONSE + MAX_RESULTS_STRING + "\(MAX_RESULTS)" + START_INDEX + "\(startIndex)"
-        }
-        else {
-           requestURL =  BASE_SEARCH_URL  + BookSearchVC.isbn + GOOGLE_APIKEY
-            BookSearchVC.isbn = ""
-        }
-     //   print("\(requestURL)")
+        
+        
+        
+        print("\(requestURL)")
         _books = []
         Alamofire.request(requestURL).responseJSON(completionHandler: { response in
             let result = response.result.value

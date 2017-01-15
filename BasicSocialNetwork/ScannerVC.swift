@@ -97,7 +97,7 @@ class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
         //check if request was good if not popup error message
         //if good transition to booksearch vc passing book data which will reload the tableview
         BookSearchVC.isbn = code 
-        self.tabBarController?.selectedIndex = 2
+        self.tabBarController?.selectedIndex = 1
     }
     
     override var prefersStatusBarHidden: Bool {

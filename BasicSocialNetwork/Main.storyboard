@@ -828,8 +828,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="fyB-ht-VEs">
-                                <rect key="frame" x="127" y="116" width="200" height="29"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="fyB-ht-VEs">
+                                <rect key="frame" x="87.5" y="75" width="200" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="zhH-Yj-ipg"/>
                                 </constraints>
@@ -837,15 +837,16 @@
                                     <segment title="Title"/>
                                     <segment title="Author"/>
                                     <segment title="Genre"/>
+                                    <segment title="ISBN"/>
                                 </segments>
                                 <connections>
                                     <action selector="segmentedControlAction:" destination="3ax-C8-pV0" eventType="valueChanged" id="hHH-Dp-xyt"/>
                                 </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search By:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZJ4-uz-7J9">
-                                <rect key="frame" x="137" y="49" width="101" height="21"/>
+                                <rect key="frame" x="142.5" y="49" width="90" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="101" id="wtw-UQ-aEG"/>
+                                    <constraint firstAttribute="width" constant="90" id="wtw-UQ-aEG"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                 <nil key="textColor"/>
