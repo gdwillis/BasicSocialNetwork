@@ -86,10 +86,13 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
         
         self.definesPresentationContext = true      //  automaticallyAdjustsScrollViewInsets = false
        // definesPresentationContext = true
-        self.collectionView.reloadData()
         
-        DataService.ds.REF_USER_CURRENT_BOOKS.observe(.value, with: {(snapshot) in
-            User.resetBooks()
+      //  self.collectionView.reloadData()
+        
+    }
+    func updateCollectionView() {
+        User.resetBooks()
+        DataService.ds.REF_USER_CURRENT_BOOKS.observeSingleEvent(of: .value, with: {(snapshot) in
             if let myBooks = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 var counter: Int = 0
                 for book in myBooks {
@@ -99,31 +102,30 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
                         let bookKey = snapshot.key
                         if let bookData = snapshot.value as? Dictionary<String, AnyObject> {
                             let thisBook = Book(bookKey: bookKey, bookData: bookData, category: category)
-                           
                             
-                        switch(thisBook.category!)
-                        {
-                        case  AM_READING:
-                            
-                           
-                             User.amReadingBooks.append(thisBook)
-                            
-                            break;
-                        case HAVE_READ:
-                            
-                            User.haveReadBooks.append(thisBook)
-                         
-                            
-                            break
-                        case WANT_TO_READ:
-                            
-                            User.wantToReadBooks.append(thisBook)
-                            
-                            break
-                        default:
-                            break
-                            
-                        }
+                            switch(thisBook.category!)
+                            {
+                            case  AM_READING:
+                                
+                                
+                                User.amReadingBooks.append(thisBook)
+                                
+                                break;
+                            case HAVE_READ:
+                                
+                                User.haveReadBooks.append(thisBook)
+                                
+                                
+                                break
+                            case WANT_TO_READ:
+                                
+                                User.wantToReadBooks.append(thisBook)
+                                
+                                break
+                            default:
+                                break
+                                
+                            }
                         }
                         counter += 1
                         //only reload data when observer finishes apending all books
@@ -135,13 +137,14 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
                     
                 }
             }
-            
         })
-        // Do any additional setup after loading the view.
+
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       // self.navigationController?.setNavigationBarHidden(true, animated: true)
+       
+        updateCollectionView()
+        // self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

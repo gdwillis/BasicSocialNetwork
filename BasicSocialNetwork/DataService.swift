@@ -16,7 +16,6 @@ let STORAGE_BASE = FIRStorage.storage().reference()
 class DataService {
     
     static let ds = DataService()
-    
     //DB references
     private var _REF_BASE = DB_BASE
     private var _REF_POSTS = DB_BASE.child("posts")
@@ -45,16 +44,17 @@ class DataService {
     }
     
     var REF_USER_CURRENT: FIRDatabaseReference {
-        //let user = REF_USERS.child(uid!)
-        let user = REF_USERS.child("x001")
+        //needs to be safer
+        let uid = KeychainWrapper.standard.string(forKey: KEY_UID)
+        let user = REF_USERS.child(uid!)
+    
+        //let user = REF_USERS.child("x001")
                 //user.setValue(post)
         return user
     }
     
     var REF_USER_CURRENT_BOOKS: FIRDatabaseReference {
-        //let user = REF_USERS.child(uid!)
-        let myBooks = REF_USERS.child("x001").child("myBooks")
-        //user.setValue(post)
+        let myBooks = REF_USER_CURRENT.child("myBooks")
         return myBooks 
     }
     

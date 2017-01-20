@@ -19,7 +19,7 @@ class ConfirmDeleteBookVC: UIViewController {
     @IBAction func OnYes(_ sender: AnyObject) {
         book.removeBook()
         
-        self.dismiss(animated: true, completion: nil)
+      //  self.dismiss(animated: true, completion: nil)
         
        // book.updateUsersMyBooks()
         self.performSegue(withIdentifier: "unwindToMyBooks", sender: nil)
