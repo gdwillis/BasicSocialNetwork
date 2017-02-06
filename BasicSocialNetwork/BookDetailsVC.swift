@@ -49,6 +49,7 @@ class BookDetailsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if hasAddButton {
             addButton.setTitle("Add", for: .normal)
             let margin = addButton.superview?.layoutMarginsGuide

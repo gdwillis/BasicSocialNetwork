@@ -11,10 +11,7 @@ import Alamofire
 
 class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource,UISearchResultsUpdating  {
     
-    
-    @IBAction func unwindToSearch(segue: UIStoryboardSegue) {
-        
-    }
+   
     
     @IBOutlet weak var searchByLabel: UILabel!
     static var isbn = ""
@@ -202,6 +199,12 @@ class BookSearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource
             return
         }
     }
-
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+        
+        //resultsSearchController.isActive = false
+        resultsSearchController.searchBar.resignFirstResponder()
+    }
 }
 

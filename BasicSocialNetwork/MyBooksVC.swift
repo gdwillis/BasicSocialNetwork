@@ -72,7 +72,7 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
         resultsSearchController.searchBar.delegate = self
     
         resultsSearchController.searchBar.placeholder = "Find books in my list"
-        
+      
        // self.resultsSearchController.hides
      
        
@@ -88,7 +88,12 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
        // definesPresentationContext = true
         
       //  self.collectionView.reloadData()
+     
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        // resultsSearchController.searchBar.resignFirstResponder()
     }
     func updateCollectionView() {
         User.resetBooks()
@@ -142,16 +147,23 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       
+        
+      
+        let tabBarControllerItems = self.tabBarController?.tabBar.items
+        if let tabArray = tabBarControllerItems {
+            for item in tabArray {
+                item.isEnabled = true
+            }
+        }
+        
         updateCollectionView()
+     
         // self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if(self.resultsSearchController.isActive) {
@@ -175,7 +187,7 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
   
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let myCell = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell", for: indexPath) as? BookCell {
-            if self.resultsSearchController.isActive {
+            if self.resultsSearchController.isActive  {
                 myCell.configureCell(book: filteredBooks[indexPath.row])
             }
             else {
@@ -202,7 +214,9 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        
+       // if searchController.searchBar.text == "" {
+         //   return
+        //}
         filteredBooks.removeAll(keepingCapacity: false)
         
         var array = [Book]()
@@ -250,5 +264,8 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
         sortButton.transform = sortButton.transform.scaledBy(x: 1, y: -1)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
    
 }

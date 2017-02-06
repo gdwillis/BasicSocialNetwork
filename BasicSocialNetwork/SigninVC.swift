@@ -12,21 +12,35 @@ import FBSDKCoreKit
 import Firebase
 import SwiftKeychainWrapper
 
-class SigninVC: UIViewController {
 
+class SigninVC: UIViewController, UITextFieldDelegate {
+
+    @IBOutlet weak var passwordValidater: UILabel!
+    @IBOutlet weak var emailValidater: UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var forgotPasswordBtn: UIButton!
+    
+    @IBAction func onBackBtn(_ sender: AnyObject) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    let movieTransitionDelegate = MovieTransitionDelegate()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
+        passwordTextField.delegate = self
+        emailTextField.delegate = self
+      
         // Do any additional setup after loading the view, typically from a nib.
     }
-    //GW: segues must be performed in viewDidAppear. viewDidLoad is to late
-    override func viewDidAppear(_ animated: Bool) {
-        //if sign in credentials are saved skip sign in view
-        if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
-            performSegue(withIdentifier: SEGUE_TO_FEED, sender: nil)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+
+        self.errorLabel.isHidden = true
+        forgotPasswordBtn.isHidden = true
     }
+    //GW: segues must be performed in viewDidAppear. viewDidLoad is to late
+   
     @IBAction func facebookButtonTapped(_ sender: AnyObject) {
         
         let facebookLogin = FBSDKLoginManager()
@@ -60,33 +74,79 @@ class SigninVC: UIViewController {
             }
         })
     }
+    
+  
+    func showOverlayFor () {
+        let sb = UIStoryboard(name: "Main", bundle:nil)
         
+        transitioningDelegate = movieTransitionDelegate
+       
+            let overlayVC = sb.instantiateViewController(withIdentifier: "GoogleSignIn") as! GooglePopupVC
+        
+            overlayVC.completeSignIn = completeSignIn
+         
+        
+        
+        overlayVC.transitioningDelegate = movieTransitionDelegate
+            overlayVC.modalPresentationStyle = .custom
+            
+            self.present(overlayVC, animated: true, completion: nil)
+    }
+    
     @IBOutlet weak var passwordTextField: FancyField!
     @IBOutlet weak var emailTextField: FancyField!
     @IBAction func signInTapped(_ sender: AnyObject) {
+        forgotPasswordBtn.isHidden = true
+        errorLabel.text = ""
+        errorLabel.isHidden = true
         if let email = emailTextField.text, let password = passwordTextField.text {
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
-                if error == nil {
+                if error != nil{
+                    let error = error! as NSError
+                    let errCode = FIRAuthErrorCode(rawValue: error.code )
+                    self.errorLabel.isHidden = false
+                    if errCode == .errorCodeUserNotFound {
+                        self.errorLabel.text = "Error: User not found"
+                    }
+                    else if errCode == .errorCodeWrongPassword {
+                        
+                      
+                        FIRAuth.auth()?.fetchProviders(forEmail: email, completion: {providers, error in
+                            if let providers = providers {
+                                
+                                if providers.contains(FIRGoogleAuthProviderID) {
+                                    
+                                    self.showOverlayFor()
+                                }
+                                else {
+                                    self.errorLabel.text = "Error: Wrong Password"
+                                    
+                                    self.forgotPasswordBtn.isHidden = false
+                                }
+                            }
+                            else {
+                                self.errorLabel.text = "Error: Something went wrong please try again at a later time"
+                            }
+                        })
+                    }
+                    else if errCode == .errorCodeUserDisabled{
+                          self.errorLabel.text = "Error: User account is disabled"
+                    }
+                   
+                    else {
+                        self.errorLabel.text = "Error: Something went wrong please try again at a later time"
+                    }
+
+
+                } else {
                     print("GW: Email user authenticated with Firebase")
+                 
+                    
                     if let user = user {
                         let userData = ["provider": user.providerID]
                         self.completeSignIn(id: user.uid, userData: userData)
                     }
-
-                } else {
-                    print("GW: \(error)")
-                    FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: {(user, error) in
-                        if error != nil {
-                            print("GW: unable to authenticate with firebase using email \(error)")
-                        } else {
-                            print("GW: Succesfully authenticated with firebase")
-                            if let user = user {
-                                let userData = ["provider": user.providerID]
-                                self.completeSignIn(id: user.uid, userData: userData)
-                            }
-                        }
-                        })
-                }
+                                   }
             })
         }
     }
@@ -95,7 +155,21 @@ class SigninVC: UIViewController {
         DataService.ds.createFirebaseDBUser(uid: id, userData: userData)
         let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
         print("GW: Data saved to keychain \(keychainResult)")
+        print("firebaseid: \(id)")
         performSegue(withIdentifier: SEGUE_TO_FEED, sender: nil)
+        
+        
+    }
+    
+       override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        self.view.endEditing(true)
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return  true
     }
 
 }

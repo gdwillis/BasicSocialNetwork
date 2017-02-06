@@ -89,7 +89,6 @@ class ScannerVC: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
             found(code: readableObject.stringValue);
         }
         
-        dismiss(animated: true)
     }
     
     func found(code: String) {

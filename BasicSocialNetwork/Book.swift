@@ -28,7 +28,7 @@ class Book {
     private var _description: String?
     private var _date: String?
     private var _genres: [String]?
-    private let imageCache = AutoPurgingImageCache(memoryCapacity: 100_000_000, preferredMemoryUsageAfterPurge: 60_000_000)
+   
     
     
     
@@ -182,9 +182,8 @@ class Book {
     
     public func updateUsersMyBooks() {
    
-    usersMyBooksRef.updateChildValues(self.serializeUsersMyBooks())
+        usersMyBooksRef.updateChildValues(self.serializeUsersMyBooks())
     }
-    
     func removeBook () {
         
         if _isManualyAdded {
@@ -215,7 +214,7 @@ class Book {
     }
     
     func getImageFromGoogle(imageView: UIImageView, activityIndicator: UIActivityIndicatorView, isThumbnail: Bool) {
-        
+       // print(imageca)
         var imageURL: String?
         if isThumbnail {
             imageURL = _thumbnailURL
@@ -223,7 +222,7 @@ class Book {
         else {
             imageURL = _largeImageURL
         }
-        
+       
         if let image = getImageFromCache(imageURL: imageURL) {
             imageView.image = image
             print("GW: image came from cache")

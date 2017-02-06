@@ -9,15 +9,16 @@
 import UIKit
 import Firebase
 import SwiftKeychainWrapper
-
+import GoogleSignIn
 class SignOutVC: UIViewController {
 
     @IBAction func onSignOut(_ sender: Any) {
         User.resetBooks()
         let keychainResult = KeychainWrapper.standard.removeObject(forKey:KEY_UID)
         print("GW: ID removed from keychian \(keychainResult)")
+        GIDSignIn.sharedInstance().signOut()
         try! FIRAuth.auth()?.signOut()
-        dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: UNWINDSEGUE_TO_AUTH, sender: nil)
     }
     override func viewDidLoad() {
         super.viewDidLoad()

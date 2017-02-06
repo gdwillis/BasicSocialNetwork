@@ -9,6 +9,6 @@
 #ifndef Bridging_Header_h
 #define Bridging_Header_h
 
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
-
+//#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <GoogleSignIn/GoogleSignIn.h>
 #endif /* Bridging_Header_h */

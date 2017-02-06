@@ -43,7 +43,7 @@ class BookUpdateVC: UIViewController {
         }
         
         
-       self.performSegue(withIdentifier: "unwindToMyBooks", sender: nil)
+       self.performSegue(withIdentifier: UNWINDSEGUE_TO_MY_BOOKS, sender: nil)
 
        // self.dismiss(animated: true, completion: {print("completed")
            // self.dismiss(animated: true, completion: nil)
@@ -71,7 +71,7 @@ class BookUpdateVC: UIViewController {
     }
    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      if segue.identifier == "unwindToMyBooks" {
+      if segue.identifier == UNWINDSEGUE_TO_MY_BOOKS {
             let destination = segue.destination as! MyBooksVC
             destination.segmentedControl.selectedSegmentIndex = book.getSegmentedControlIndex()
         }
