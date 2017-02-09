@@ -15,6 +15,10 @@ import SwiftKeychainWrapper
 
 class SigninVC: UIViewController, UITextFieldDelegate {
 
+    
+    
+   
+    @IBOutlet weak var container: UIView!
     @IBOutlet weak var passwordValidater: UILabel!
     @IBOutlet weak var emailValidater: UILabel!
     @IBOutlet weak var errorLabel: UILabel!
@@ -37,7 +41,7 @@ class SigninVC: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
 
         self.errorLabel.isHidden = true
-        forgotPasswordBtn.isHidden = true
+        self.container.isHidden = true
     }
     //GW: segues must be performed in viewDidAppear. viewDidLoad is to late
    
@@ -84,7 +88,7 @@ class SigninVC: UIViewController, UITextFieldDelegate {
             let overlayVC = sb.instantiateViewController(withIdentifier: "GoogleSignIn") as! GooglePopupVC
         
             overlayVC.completeSignIn = completeSignIn
-         
+            overlayVC.loadVC = container
         
         
         overlayVC.transitioningDelegate = movieTransitionDelegate
@@ -96,12 +100,22 @@ class SigninVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: FancyField!
     @IBOutlet weak var emailTextField: FancyField!
     @IBAction func signInTapped(_ sender: AnyObject) {
-        forgotPasswordBtn.isHidden = true
         errorLabel.text = ""
         errorLabel.isHidden = true
-        if let email = emailTextField.text, let password = passwordTextField.text {
-            FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
+        emailValidater.isHidden = true
+        passwordValidater.isHidden = true
+        guard let email = emailTextField.text, !email.isEmpty else {
+            emailValidater.isHidden = false
+            return
+        }
+        guard let password = passwordTextField.text, !password.isEmpty else {
+            passwordValidater.isHidden = false
+            return
+        }
+        self.container.isHidden = false
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error != nil{
+                    self.container.isHidden = true
                     let error = error! as NSError
                     let errCode = FIRAuthErrorCode(rawValue: error.code )
                     self.errorLabel.isHidden = false
@@ -114,14 +128,14 @@ class SigninVC: UIViewController, UITextFieldDelegate {
                         FIRAuth.auth()?.fetchProviders(forEmail: email, completion: {providers, error in
                             if let providers = providers {
                                 
-                                if providers.contains(FIRGoogleAuthProviderID) {
+                                if providers.contains(FIRGoogleAuthProviderID) && !providers.contains(FIREmailPasswordAuthProviderID){
                                     
                                     self.showOverlayFor()
                                 }
                                 else {
                                     self.errorLabel.text = "Error: Wrong Password"
                                     
-                                    self.forgotPasswordBtn.isHidden = false
+                                    
                                 }
                             }
                             else {
@@ -131,6 +145,9 @@ class SigninVC: UIViewController, UITextFieldDelegate {
                     }
                     else if errCode == .errorCodeUserDisabled{
                           self.errorLabel.text = "Error: User account is disabled"
+                    }
+                    else if errCode == .errorCodeInvalidEmail {
+                        self.errorLabel.text = "Error: This is not a valid email"
                     }
                    
                     else {
@@ -143,12 +160,17 @@ class SigninVC: UIViewController, UITextFieldDelegate {
                  
                     
                     if let user = user {
+                       
                         let userData = ["provider": user.providerID]
                         self.completeSignIn(id: user.uid, userData: userData)
                     }
-                                   }
+                    
+                    else {
+                         self.container.isHidden = true
+                    }
+                }
             })
-        }
+        
     }
 
     func completeSignIn(id: String, userData: Dictionary<String, String>) {
@@ -161,7 +183,8 @@ class SigninVC: UIViewController, UITextFieldDelegate {
         
     }
     
-       override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         self.view.endEditing(true)
         

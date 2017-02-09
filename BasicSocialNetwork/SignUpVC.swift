@@ -13,14 +13,38 @@ import SwiftKeychainWrapper
 
 class SignUpVC: UIViewController, UITextFieldDelegate {
     
+    
+    @IBOutlet weak var container: UIView!
+    @IBOutlet weak var passwordValidater: UILabel!
+    @IBOutlet weak var emailValidater: UILabel!
+    @IBOutlet weak var retypePasswordValidater: UILabel!
      let movieTransitionDelegate = MovieTransitionDelegate()
     
     @IBAction func onSignUp(_ sender: Any) {
-        if let email = emailTextField.text, let password = passwordTextField.text {
+        
+        errorLabel.isHidden = true
+        emailValidater.isHidden = true
+        passwordValidater.isHidden = true
+        retypePasswordValidater.isHidden = true
+        guard let email = emailTextField.text, !email.isEmpty else {
+            emailValidater.isHidden = false
+            return
+        }
+        guard let password = passwordTextField.text, !password.isEmpty else {
+            passwordValidater.isHidden = false
+            return
+        }
+        
+        guard let retypePassword = retypePasswordtextField.text, retypePassword == password else {
+            retypePasswordValidater.isHidden = false
+            return
+        }
             errorLabel.text = ""
             errorLabel.isHidden = true
+            self.container.isHidden = false
             FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: {(user, error) in
                 if error != nil{
+                    self.container.isHidden = true
                     self.errorLabel.isHidden = false
                     let error = error! as NSError
                     let errCode = FIRAuthErrorCode(rawValue: error.code )
@@ -63,20 +87,23 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
                     print("GW: Succesfully authenticated with firebase")
                     if let user = user {
                         let userData = ["provider": user.providerID]
+                        
                         self.completeSignIn(id: user.uid, userData: userData)
+            
+                    }
+                    else {
+                        self.container.isHidden = true
                     }
                 }
             })
-        }
-
     }
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var retypePasswordtextField: UITextField!
-    @IBOutlet weak var retypePasswordValidate: UILabel!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var passwordValidate: UILabel!
 
-    @IBOutlet weak var emailValidate: UILabel!
+    @IBOutlet weak var passwordTextField: UITextField!
+
+
+   
     
     @IBOutlet weak var emailTextField: UITextField!
     
@@ -95,6 +122,9 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        container.isHidden = true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

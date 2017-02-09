@@ -12,9 +12,10 @@ import Firebase
 
 class GooglePopupVC: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
 
+   
     var completeSignIn: ((String, Dictionary<String, String>) -> Void)!
     
-    
+    var loadVC: UIView!
     
     @IBAction func dismiss(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
@@ -66,7 +67,8 @@ class GooglePopupVC: UIViewController, GIDSignInDelegate, GIDSignInUIDelegate {
             
             print("user logged in with google...")
         })
-        view.isHidden = true
+        dismiss(animated: true, completion: nil)
+        loadVC.isHidden = false
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {

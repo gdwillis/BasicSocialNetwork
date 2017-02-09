@@ -22,7 +22,7 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
     @IBOutlet weak var collectionView: UICollectionView!
     
     @IBAction func segmentedControlValueChanged(_ sender: AnyObject) {
-       // resultsSearchController.isActive = false
+        resultsSearchController.isActive = false
         collectionView.reloadData()
     }
     
@@ -239,9 +239,8 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
             $0.title?.range (of: searchController.searchBar.text!, options: .caseInsensitive) != nil
         }
         
-        if searchController.searchBar.text != "" {
-            collectionView.reloadData()
-        }
+       
+        collectionView.reloadData()
         
     }
     
@@ -266,6 +265,7 @@ class MyBooksVC: UIViewController, UICollectionViewDelegate, UISearchBarDelegate
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+       
     }
    
 }
