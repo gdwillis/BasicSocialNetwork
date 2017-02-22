@@ -11,7 +11,9 @@ import UIKit
 class BookDetailsVC: UIViewController {
 
     
+    @IBOutlet weak var thumbnailContainer: UIView!
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBAction func deleteAction(_ sender: Any) {
         showOverlayFor(isMove: false)
     }
@@ -30,7 +32,6 @@ class BookDetailsVC: UIViewController {
     @IBOutlet weak var pagesHeader: UILabel!
     @IBOutlet weak var dateHeader: UILabel!
     @IBOutlet weak var publisherHeader: UILabel!
-    @IBOutlet weak var authorHeader: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var ReviewsLabel: UILabel!
@@ -109,6 +110,10 @@ class BookDetailsVC: UIViewController {
         
         book.getImageFromGoogle(imageView: thumbnail, activityIndicator: activityIndicator, isThumbnail: false)
         hideLabels()
+        var contentInset:UIEdgeInsets = self.scrollView.contentInset
+        contentInset.top = thumbnailContainer.frame.height
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
         // Do any additional setup after loading the view.
     }
 
@@ -168,13 +173,6 @@ class BookDetailsVC: UIViewController {
         }
         else {
             genreHeader.isHidden = false
-        }
-        
-        if authorLabel.text == "" {
-            authorHeader.isHidden = true
-        }
-        else {
-            authorHeader.isHidden = false
         }
         
         if dateLabel.text == nil {
