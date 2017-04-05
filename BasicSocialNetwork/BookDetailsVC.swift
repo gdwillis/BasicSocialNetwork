@@ -68,7 +68,7 @@ class BookDetailsVC: UIViewController {
         titleLabel.text = book.title
         
         if let authors = book.authors {
-            var text = ""
+            var text = "by: "
             authorLabel.numberOfLines = authors.count
             for author in authors {
                 text += "\(author)\n"
@@ -147,44 +147,28 @@ class BookDetailsVC: UIViewController {
     private func hideLabels() {
         if ReviewsLabel.text == ""
         {
-            reviewsHeader.isHidden = true
-        }
-        else {
-             reviewsHeader.isHidden = false
+            ReviewsLabel.text = "N/A"
         }
         
         if pageNumberLabel.text == ""
         {
-            pagesHeader.isHidden = true
-        }
-        else {
-            pagesHeader.isHidden = false
+            pageNumberLabel.text = "N/A"
         }
         
         if publisherLabel.text == nil {
-            publisherHeader.isHidden = true
-        }
-        else {
-            publisherHeader.isHidden = false
+            publisherLabel.text = "N/A"
         }
         
         if genreLabel.text == "" {
-            genreHeader.isHidden = true
-        }
-        else {
-            genreHeader.isHidden = false
+            genreLabel.text = "N/A"
         }
         
         if dateLabel.text == nil {
-            dateHeader.isHidden = true
-        } else {
-            dateHeader.isHidden = false
+            dateLabel.text = "N/A"
         }
         
         if descriptionLabel.text == nil {
-            descriptionHeader.isHidden = true
-        } else {
-            descriptionHeader.isHidden = false
+            descriptionLabel.text = "N/A"
         }
     
     }

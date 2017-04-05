@@ -42,6 +42,8 @@ class BookCell: UICollectionViewCell {
            //     authorLabel.text = text
           //  }
         //}
+        
+        //this should return image back and bookCell sets it
         _book.getImageFromGoogle(imageView: thumbnail, activityIndicator: activityIndicator, isThumbnail: true)
     }
 
